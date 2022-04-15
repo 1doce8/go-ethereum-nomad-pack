@@ -98,6 +98,22 @@ variable "http_consul_service_name" {
   default     = "geth-http"
 }
 
+## API AND CONSOLE OPTIONS
+
+### IPC socket
+
+variable "ipc_disable" {
+  description = "Disable the IPC-RPC server (default: true)"
+  type        = bool
+  default     = true
+}
+
+variable "ipc_path" {
+  description = "Filename for IPC socket/pipe within the datadir (explicit paths escape it) (default: '')"
+  type        = string
+  default     = ""
+}
+
 ### RPC over websockets
 
 variable "ws_enable" {
@@ -137,11 +153,110 @@ variable "ws_origins" {
 }
 
 variable "ws_consul_service_name" {
-  description = "The consul service name for the geth application (default: geth-ws)"
+  description = "The consul service name for the geth application websocket port (default: geth-ws)"
   type        = string
   default     = "geth-ws"
 }
 
+### Auth RPC
+
+variable "authrpc_jwtsecret" {
+  description = "Path to a JWT secret to use for authenticated RPC endpoints (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "authrpc_addr" {
+  description = "Listening address for authenticated APIs (default: 'localhost')"
+  type        = string
+  default     = "localhost"
+}
+
+variable "authrpc_port" {
+  description = "Listening port for authenticated APIs (default: 8551)"
+  type        = number
+  default     = "8551"
+}
+
+variable "authrpc_vhosts" {
+  description = "Comma separated list of virtual hostnames from which to accept requests (server enforced). Accepts '*' wildcard. (default: '*')"
+  type        = string
+  default     = "*"
+}
+
+variable "authrpc_consul_service_name" {
+  description = "The consul service name for the geth application authrpc port (default: geth-authrpc)"
+  type        = string
+  default     = "geth-authrpc"
+}
+
+### GRAPTHQL
+
+variable "graphql_enable" {
+  description = "Enable GraphQL on the HTTP-RPC server. Note that GraphQL can only be started if an HTTP server is started as well. (default: false)"
+  type        = bool
+  default     = false
+}
+
+variable "graphql_corsdomain" {
+  description = "Comma separated list of domains from which to accept cross origin requests (browser enforced) (default: *)"
+  type        = string
+  default     = "*"
+}
+
+variable "graphql_vhosts" {
+  description = "Comma separated list of virtual hostnames from which to accept requests (server enforced). Accepts '*' wildcard (default: *)"
+  type        = string
+  default     = "*"
+}
+
+### RPC SETTING
+
+variable "rpc_gascap" {
+  description = "Sets a cap on gas that can be used in eth_call/estimateGas (0=infinite) (default: 50000000)"
+  type        = number
+  default     = 50000000
+}
+
+variable "rpc_evmtimeout" {
+  description = "Sets a timeout used for eth_call (0=infinite) (default: 5s)"
+  type        = number
+  default     = 5
+}
+
+variable "rpc_txfeecap" {
+  description = "Sets a cap on transaction fee (in ether) that can be sent via the RPC APIs (0 = no cap) (default: 1)"
+  type        = number
+  default     = 1
+}
+
+variable "rpc_allow_unprotected_txs" {
+  description = "Allow for unprotected (non EIP155 signed) transactions to be submitted via RPC (default: true)"
+  type        = bool
+  default     = true
+}
+
+### JavaScript SETTINGS
+
+variable "js_path" {
+  description = "JavaScript root path for loadScript (default: '.')"
+  type        = string
+  default     = "."
+}
+
+variable "js_exec" {
+  description = "Execute JavaScript statement (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "js_preload" {
+  description = "Comma separated list of JavaScript files to preload into the console (default: '')"
+  type        = string
+  default     = ""
+}
+
+### METRICS
 variable "metrics_enable" {
   description = "Enable metrics collection and reporting (default: true)"
   type        = bool
