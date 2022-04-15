@@ -7,7 +7,7 @@ This pack is a simple Nomad job that runs as a service and can be accessed via H
 To change the message this server responds with, change the "message" variable when running the pack.
 
 ```
-nomad-pack run hello_world --var message="Hola Mundo!"
+nomad-pack run go-ethereum --var message="Hola Mundo!"
 ```
 
 This tells Nomad Pack to tweak the `MESSAGE` environment variable that the service reads from.
@@ -20,7 +20,7 @@ If the `register_consul_service` is unset or set to true, the Consul service wil
 
 Several load balancers in the [The Nomad Pack Community Registry](https://github.com/hashicorp/nomad-pack-community-registry) are configured to connect to this service by default.
 
-The [NginX](https://github.com/hashicorp/nomad-pack-community-registry/tree/main/packs/nginx/README.md) and [HAProxy](https://github.com/hashicorp/nomad-pack-community-registry/tree/main/packs/haproxy/README.md) packs are configured to balance the Consul service "hello-world-service", which is th default value for the "consul_service_name" variable.
+The [NginX](https://github.com/hashicorp/nomad-pack-community-registry/tree/main/packs/nginx/README.md) and [HAProxy](https://github.com/hashicorp/nomad-pack-community-registry/tree/main/packs/haproxy/README.md) packs are configured to balance the Consul service "hello-world-service", which is the default value for the "consul_service_name" variable.
 
 The [Fabio](https://github.com/hashicorp/nomad-pack-community-registry/tree/main/packs/fabio/README.md) and [Traefik](https://github.com/hashicorp/nomad-pack-community-registry/tree/main/packs/traefik/traefik/README.md) packs are configured to search for Consul services with the tags found in the default value of the "consul_service_tags" variable.
 

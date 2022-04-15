@@ -1,1 +1,2 @@
-Congrats! You deployed a simple service on Nomad.
+Congrats! You deployed a [[ template "job_name" . ]] on Nomad.
+Version: [[ .go_ethereum.image_tag ]]

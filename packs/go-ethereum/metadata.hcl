@@ -1,6 +1,6 @@
 app {
   url = "https://github.com/hashicorp/nomad-pack"
-  author = "Sergei Romanov"
+  author = "1doce8"
 }
 
 pack {
