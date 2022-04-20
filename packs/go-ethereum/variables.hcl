@@ -98,6 +98,34 @@ variable "http_consul_service_name" {
   default     = "geth-http"
 }
 
+## ACCOUNT OPTIONS
+
+--allow-insecure-unlock
+
+variable "account_unlock" {
+  description = "Comma separated list of accounts to unlock (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "account_password" {
+  description = "Password file to use for non-interactive password input (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "account_signer" {
+  description = "External signer (url or path to ipc file) (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "account_allow_insecure_unlock" {
+  description = "Allow insecure account unlocking when account-related RPCs are exposed by http (default: false)"
+  type        = bool
+  default     = false
+}
+
 ## API AND CONSOLE OPTIONS
 
 ### IPC socket

@@ -108,12 +108,31 @@ job [[ template "job_name" . ]] {
       }
 
       args = [
+
+          [[/* Account options */]]
+          [[ if ne (len .go_ethereum.account_unlock) 0 ]]
+          "--unlock = [[ .go_ethereum.account_unlock ]]"
+          [[ end ]]
+          [[ if ne (len .go_ethereum.account_password) 0 ]]
+          "--password = [[ .go_ethereum.account_password ]]"
+          [[ end ]]
+          [[ if ne (len .go_ethereum.account_signer) 0 ]]
+          "--signer = [[ .go_ethereum.account_signer ]]"
+          [[ end ]]
+          [[ if .go_ethereum.account_allow_insecure_unlock ]]
+          "--allow-insecure-unlock"
+          [[ end ]]
+
+
+          [[/* IPC options */]]
           [[ if .go_ethereum.ipc_disable ]]
           "--ipcdisable"
           [[ end ]]
           [[ if ne (len .go_ethereum.ipc_path) 0 ]]
           "--ipcpath = [[ .go_ethereum.ipc_path ]]"
           [[ end ]]
+
+          [[/* HTTP options */]]
           [[ if .go_ethereum.http_enable ]]
           "--http",
           "--http.addr=[[ .go_ethereum.http_addr ]]",
@@ -123,6 +142,8 @@ job [[ template "job_name" . ]] {
           "--http.corsdomain=[[ .go_ethereum.http_corsdomain ]]",
           "--http.vhosts=[[ .go_ethereum.http_vhosts ]]",
           [[ end ]]
+
+          [[/* Websockets options */]]
           [[ if .go_ethereum.ws_enable ]]
           "--ws",
           "--ws.addr=[[ .go_ethereum.ws_addr ]]",
@@ -131,17 +152,23 @@ job [[ template "job_name" . ]] {
           "--ws.rpcprefix=[[ .go_ethereum.ws_rpcprefix ]]"
           "--ws.origins=[[ .go_ethereum.ws_origins ]]",
           [[ end ]]
+
+          [[/* Auth RPC options */]]
           [[ if ne (len .go_ethereum.authrpc_jwtsecret) 0 ]]
           "--authrpc.jwtsecret=[[ .go_ethereum.authrpc_jwtsecret ]]",
           [[ end ]]
           "--authrpc.addr=[[ .go_ethereum.authrpc_addr ]]",
           "--authrpc.port=[[ .go_ethereum.authrpc_port ]]",
           "--authrpc.vhosts=[[ .go_ethereum.authrpc_vhosts ]]",
+
+          [[/* GraphQL options */]]
           [[ if .go_ethereum.graphql_enable ]][[ if .go_ethereum.http_enable ]]
           "--graphql",
           "--graphql.corsdomain=[[ .go_ethereum.graphql_corsdomain ]]",
           "--graphql.vhosts=[[ .go_ethereum.graphql_vhosts ]]",
           [[ end ]][[ end ]]
+
+          [[/* RPC settings */]]
           "--rpc.gascap=[[ .go_ethereum.rpc_gascap ]]",
           "--rpc.evmtimeout=[[ .go_ethereum.rpc_evmtimeout ]]",
           "--rpc.txfeecap=[[ .go_ethereum.rpc_txfeecap ]]",
@@ -149,6 +176,7 @@ job [[ template "job_name" . ]] {
           "--rpc.allow-unprotected-txs",
           [[ end ]]
 
+          [[/* JS settings */]]
           "--jspath=[[ .go_ethereum.js_path ]]",
           [[- if ne (len .go_ethereum.js_exec) 0 ]]
           "--exec=[[ .go_ethereum.js_exec ]]",
@@ -156,6 +184,7 @@ job [[ template "job_name" . ]] {
           [[- if ne (len .go_ethereum.js_preload) 0 ]]
           "--exec=[[ .go_ethereum.js_preload ]]",
           [[- end ]]
+
 
           "--snapshot=false",
           "--syncmode=full",
