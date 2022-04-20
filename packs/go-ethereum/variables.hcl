@@ -29,6 +29,7 @@ variable "image_name" {
   default     = "ethereum/client-go"
 }
 
+### version
 variable "image_tag" {
   description = "The docker image tag (default: v1.10.17)"
   type        = string
@@ -97,6 +98,8 @@ variable "http_consul_service_name" {
   type        = string
   default     = "geth-http"
 }
+
+
 
 ## ETHEREUM OPTIONS
 
@@ -201,6 +204,62 @@ variable "eth_requiredblocks" {
   description = "Comma separated block number-to-hash mappings to require for peering (<number>=<hash>) (default: string)"
   type        = string
   default     = ""
+}
+
+## LIGHT CLIENT OPTIONS
+
+variable "light_serve" {
+  description = "Maximum percentage of time allowed for serving LES requests (multi-threaded processing allows values over 100) (default: 0)"
+  type        = number
+  default     = 0
+}
+
+variable "light_ingress" {
+  description = "Incoming bandwidth limit for serving light clients (kilobytes/sec, 0 = unlimited) (default: 0)"
+  type        = number
+  default     = 0
+}
+
+variable "light_egress" {
+  description = "Outgoing bandwidth limit for serving light clients (kilobytes/sec, 0 = unlimited) (default: 0)"
+  type        = number
+  default     = 0
+}
+
+variable "light_maxpeers" {
+  description = "Maximum number of light clients to serve, or light servers to attach to (default: 100)"
+  type        = number
+  default     = 100
+}
+
+variable "ulc_servers" {
+  description = "List of trusted ultra-light servers (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "ulc_fraction" {
+  description = "Minimum % of trusted ultra-light servers required to announce a new head (default: 75)"
+  type        = number
+  default     = 75
+}
+
+variable "ulc_onlyannounce" {
+  description = "Ultra light server sends announcements only (default: false)"
+  type        = bool
+  default     = false
+}
+
+variable "light_nopruning" {
+  description = "Disable ancient light chain data pruning (default: false)"
+  type        = bool
+  default     = false
+}
+
+variable "light_nosyncserve" {
+  description = "Enables serving light clients before syncing (default: false)"
+  type        = bool
+  default     = false
 }
 
 ## ACCOUNT OPTIONS

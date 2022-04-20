@@ -1,6 +1,6 @@
 job [[ template "job_name" . ]] {
   [[ template "region" . ]]
-  datacenters = [[ .go_ethereum.datacenters  | toJson ]]
+  datacenters = [ [[ range $idx, $dc := .go_ethereum.datacenters ]][[if $idx]],[[end]][[ $dc | quote ]][[ end ]] ]
   type = "service"
 
   group [[ template "job_name" . ]] {
@@ -139,27 +139,55 @@ job [[ template "job_name" . ]] {
           [[ else ]]
           "--[[ .go_ethereum.network_alias ]]"
           [[ end ]]
-          [[ if ne (len .go_ethereum.sync_syncmode) 0 ]]
+
           "--syncmode = [[ .go_ethereum.sync_syncmode ]]",
-          [[ end ]]
+
           [[ if .go_ethereum.sync_exitwhensynced ]]
           "--exitwhensynced"
           [[ end ]]
           [[ if ne (len .go_ethereum.sync_gcmode) 0 ]]
           "--gcmode = [[ .go_ethereum.sync_gcmode ]]",
           [[ end ]]
+
           "--txlookuplimit = [[ .go_ethereum.txlookuplimit ]]",
+
           [[ if ne (len .go_ethereum.ethstats) 0 ]]
           "--ethstats = [[ .go_ethereum.ethstats ]]",
           [[ end ]]
           [[ if ne (len .go_ethereum.identity) 0 ]]
           "--identity = [[ .go_ethereum.identity ]]",
           [[ end ]]
-          [[ if ne (len .go_ethereum.lightkdf) 0 ]]
+          [[ if .go_ethereum.lightkdf ]]
           "--lightkdf = [[ .go_ethereum.lightkdf ]]",
           [[ end ]]
           [[ if ne (len .go_ethereum.eth_requiredblocks) 0 ]]
           "--eth.requiredblocks = [[ .go_ethereum.eth_requiredblocks ]]",
+          [[ end ]]
+
+          [[/* LIGHT CLIENT OPTIONS */]]
+          [[ if eq .go_ethereum.sync_syncmode "light" ]]
+
+          "--light.serve = [[ .go_ethereum.light_serve ]]",
+          "--light.ingress = [[ .go_ethereum.light_ingress ]]",
+          "--light.egress = [[ .go_ethereum.light_egress ]]",
+          "--light.maxpeers = [[ .go_ethereum.light_maxpeers ]]",
+
+            [[ if ne (len .go_ethereum.ulc_servers) 0 ]]
+          "--ulc.servers  = [[ .go_ethereum.ulc_servers ]]",
+            [[ end ]]
+
+          "--ulc.fraction = [[ .go_ethereum.ulc_fraction ]]",
+
+            [[ if .go_ethereum.ulc_onlyannounce ]]
+          "--ulc.onlyannounce",
+            [[ end ]]
+            [[ if .go_ethereum.light_nopruning ]]
+          "--light.nopruning",
+            [[ end ]]
+            [[ if .go_ethereum.light_nosyncserve ]]
+          "--light.nosyncserve ",
+            [[ end ]]
+
           [[ end ]]
 
           [[/* ACCOUNT OPTIONS */]]
@@ -241,10 +269,6 @@ job [[ template "job_name" . ]] {
           "--exec=[[ .go_ethereum.js_preload ]]",
           [[- end ]]
 
-
-          "--snapshot=false",
-          "--syncmode=full",
-          "--cache="
       ]
 
     }
