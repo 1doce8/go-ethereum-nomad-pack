@@ -109,7 +109,60 @@ job [[ template "job_name" . ]] {
 
       args = [
 
-          [[/* Account options */]]
+          [[/* ETHEREUM OPTIONS */]]
+          [[ if ne (len .go_ethereum.config_path) 0 ]]
+          "--config = [[ .go_ethereum.config_path ]]",
+          [[ end ]]
+          [[ if ne (len .go_ethereum.datadir_path) 0 ]]
+          "--datadir = [[ .go_ethereum.datadir_path ]]",
+          [[ end ]]
+          [[ if ne (len .go_ethereum.datadir_ancient) 0 ]]
+          "--datadir = [[ .go_ethereum.datadir_ancient ]]",
+          [[ end ]]
+          [[ if ne (len .go_ethereum.datadir_minfreedisk) 0 ]]
+          "--datadir = [[ .go_ethereum.datadir_minfreedisk ]]",
+          [[ end ]]
+          [[ if ne (len .go_ethereum.datadir_keystore) 0 ]]
+          "--keystore = [[ .go_ethereum.datadir_keystore ]]",
+          [[ end ]]
+          [[ if ne (len .go_ethereum.datadir_keystore) 0 ]]
+          "--keystore = [[ .go_ethereum.datadir_keystore ]]",
+          [[ end ]]
+          [[ if .go_ethereum.usb ]]
+          "--usb"
+          [[ end ]]
+          [[ if ne (len .go_ethereum.pcscdpath) 0 ]]
+          "--pcscdpath = [[ .go_ethereum.pcscdpath ]]",
+          [[ end ]]
+          [[ if ne (len .go_ethereum.network_id) 0 ]]
+          "--network_id = [[ .go_ethereum.network_id ]]",
+          [[ else ]]
+          "--[[ .go_ethereum.network_alias ]]"
+          [[ end ]]
+          [[ if ne (len .go_ethereum.sync_syncmode) 0 ]]
+          "--syncmode = [[ .go_ethereum.sync_syncmode ]]",
+          [[ end ]]
+          [[ if .go_ethereum.sync_exitwhensynced ]]
+          "--exitwhensynced"
+          [[ end ]]
+          [[ if ne (len .go_ethereum.sync_gcmode) 0 ]]
+          "--gcmode = [[ .go_ethereum.sync_gcmode ]]",
+          [[ end ]]
+          "--txlookuplimit = [[ .go_ethereum.txlookuplimit ]]",
+          [[ if ne (len .go_ethereum.ethstats) 0 ]]
+          "--ethstats = [[ .go_ethereum.ethstats ]]",
+          [[ end ]]
+          [[ if ne (len .go_ethereum.identity) 0 ]]
+          "--identity = [[ .go_ethereum.identity ]]",
+          [[ end ]]
+          [[ if ne (len .go_ethereum.lightkdf) 0 ]]
+          "--lightkdf = [[ .go_ethereum.lightkdf ]]",
+          [[ end ]]
+          [[ if ne (len .go_ethereum.eth_requiredblocks) 0 ]]
+          "--eth.requiredblocks = [[ .go_ethereum.eth_requiredblocks ]]",
+          [[ end ]]
+
+          [[/* ACCOUNT OPTIONS */]]
           [[ if ne (len .go_ethereum.account_unlock) 0 ]]
           "--unlock = [[ .go_ethereum.account_unlock ]]"
           [[ end ]]
@@ -124,6 +177,7 @@ job [[ template "job_name" . ]] {
           [[ end ]]
 
 
+          [[/* API AND CONSOLE OPTIONS */]]
           [[/* IPC options */]]
           [[ if .go_ethereum.ipc_disable ]]
           "--ipcdisable"
@@ -177,7 +231,9 @@ job [[ template "job_name" . ]] {
           [[ end ]]
 
           [[/* JS settings */]]
+          [[- if ne (len .go_ethereum.js_path) 0 ]]
           "--jspath=[[ .go_ethereum.js_path ]]",
+          [[- end ]]
           [[- if ne (len .go_ethereum.js_exec) 0 ]]
           "--exec=[[ .go_ethereum.js_exec ]]",
           [[- end ]]

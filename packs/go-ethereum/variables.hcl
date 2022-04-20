@@ -98,9 +98,112 @@ variable "http_consul_service_name" {
   default     = "geth-http"
 }
 
-## ACCOUNT OPTIONS
+## ETHEREUM OPTIONS
 
---allow-insecure-unlock
+variable "config_path" {
+  description = "Path to TOML configuration file (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "datadir_path" {
+  description = "Path to Data directory for the databases and keystore (default: '~/.ethereum')"
+  type        = string
+  default     = "~/.ethereum"
+}
+
+variable "datadir_ancient" {
+  description = "Path to Data directory for ancient chain segments (default = inside chaindata)"
+  type        = string
+  default     = ""
+}
+
+variable "datadir_minfreedisk" {
+  description = "Minimum free disk space in MB, once reached triggers auto shut down (default = --cache.gc converted to MB, 0 = disabled)"
+  type        = string
+  default     = ""
+}
+
+variable "datadir_keystore" {
+  description = "Directory for the keystore (default = inside the datadir)"
+  type        = string
+  default     = ""
+}
+
+variable "usb" {
+  description = "Enable monitoring and management of USB hardware wallets (default = false)"
+  type        = bool
+  default     = false
+}
+
+variable "pcscdpath" {
+  description = "Path to the smartcard daemon (pcscd) socket file (default = '')"
+  type        = string
+  default     = ""
+}
+
+### Network options, if network id has specified alias will be ignored
+variable "network_alias" {
+  description = "Network alias of pre-configured network e.g. --mainnet --goreli (default: 'mainnet')"
+  type        = string
+  default     = "mainnet"
+}
+
+variable "network_id" {
+  description = "Explicitly set network id (integer) (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "sync_syncmode" {
+  description = "Blockchain sync mode ('snap', 'full' or 'light') (default: snap)"
+  type        = string
+  default     = "snap"
+}
+
+variable "sync_exitwhensynced" {
+  description = "Exits after block synchronisation completes (default: false)"
+  type        = bool
+  default     = false
+}
+
+variable "sync_gcmode" {
+  description = "Blockchain garbage collection mode ('full', 'archive') (default: 'full')"
+  type        = string
+  default     = "full"
+}
+
+variable "txlookuplimit" {
+  description = "Number of recent blocks to maintain transactions index for (default = about one year, 0 = entire chain) (default: 2350000)"
+  type        = number
+  default     = 2350000
+}
+
+variable "ethstats" {
+  description = "Reporting URL of a ethstats service (nodename:secret@host:port) (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "identity" {
+  description = "Custom node name (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "lightkdf" {
+  description = "Reduce key-derivation RAM & CPU usage at some expense of KDF strength (default: false)"
+  type        = bool
+  default     = false
+}
+
+variable "eth_requiredblocks" {
+  description = "Comma separated block number-to-hash mappings to require for peering (<number>=<hash>) (default: string)"
+  type        = string
+  default     = ""
+}
+
+## ACCOUNT OPTIONS
 
 variable "account_unlock" {
   description = "Comma separated list of accounts to unlock (default: '')"
@@ -267,9 +370,9 @@ variable "rpc_allow_unprotected_txs" {
 ### JavaScript SETTINGS
 
 variable "js_path" {
-  description = "JavaScript root path for loadScript (default: '.')"
+  description = "JavaScript root path for loadScript (default: '')"
   type        = string
-  default     = "."
+  default     = ""
 }
 
 variable "js_exec" {
