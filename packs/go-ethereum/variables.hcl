@@ -262,6 +262,26 @@ variable "light_nosyncserve" {
   default     = false
 }
 
+## DEVELOPER CHAIN OPTIONS
+
+variable "dev_enable" {
+  description = "Ephemeral proof-of-authority network with a pre-funded developer account, mining enabled (default: false)"
+  type        = bool
+  default     = false
+}
+
+variable "dev_period" {
+  description = "Block period to use in developer mode (0 = mine only if transaction pending) (default: 0)"
+  type        = number
+  default     = 0
+}
+
+variable "dev_gaslimit" {
+  description = "Initial block gas limit (default: 11500000)"
+  type        = number
+  default     = 11500000
+}
+
 ## ACCOUNT OPTIONS
 
 variable "account_unlock" {

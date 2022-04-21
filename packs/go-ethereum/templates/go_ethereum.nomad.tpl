@@ -134,8 +134,10 @@ job [[ template "job_name" . ]] {
           [[ if ne (len .go_ethereum.pcscdpath) 0 ]]
           "--pcscdpath = [[ .go_ethereum.pcscdpath ]]",
           [[ end ]]
+
           [[ if ne (len .go_ethereum.network_id) 0 ]]
           "--network_id = [[ .go_ethereum.network_id ]]",
+          [[ else if .go_ethereum.dev_enable  ]]
           [[ else ]]
           "--[[ .go_ethereum.network_alias ]]"
           [[ end ]]
@@ -188,6 +190,13 @@ job [[ template "job_name" . ]] {
           "--light.nosyncserve ",
             [[ end ]]
 
+          [[ end ]]
+
+          [[/* DEVELOPER CHAIN OPTIONS */]]
+          [[ if .go_ethereum.dev_enable ]]
+          "--dev",
+          "--dev.period = [[ .go_ethereum.dev_period ]] ",
+          "--dev.gaslimit = [[ .go_ethereum.dev_gaslimit ]] ",
           [[ end ]]
 
           [[/* ACCOUNT OPTIONS */]]
