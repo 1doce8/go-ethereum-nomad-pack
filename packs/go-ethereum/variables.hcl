@@ -1,12 +1,14 @@
+### Common
+
 variable "job_name" {
-  description = "The name to use as the job name which overrides using the pack name"
+  description = "The name to use as the job name which overrides using the pack name (default: go-ethereum)"
   type        = string
   // If "", the pack name will be used
   default = "go-ethereum"
 }
 
 variable "region" {
-  description = "The region where jobs will be deployed"
+  description = "The region where jobs will be deployed (default: '')"
   type        = string
   default     = ""
 }
@@ -23,10 +25,40 @@ variable "count" {
   default     = 1
 }
 
+variable "constraints" {
+  description = "Constraints to apply to the entire job (default: linux|darwin)"
+  type = list(object({
+    attribute = string
+    operator  = string
+    value     = string
+  }))
+  default = [
+    {
+      attribute = "$${attr.kernel.name}",
+      value     = "(linux|darwin)",
+      operator  = "regexp",
+    },
+  ]
+}
+
+variable "template_path" {
+  description = "Path to template config file (default: '')"
+  type        = string
+  default     = ""
+}
+
+### Image options
+
 variable "image_name" {
   description = "The docker image name without tag (default: ethereum/client-go)"
   type        = string
   default     = "ethereum/client-go"
+}
+
+variable "image_tag" {
+  description = "The docker image tag (default: v1.10.17)"
+  type        = string
+  default     = "v1.10.17"
 }
 
 variable "registry_auth_username" {
@@ -41,12 +73,33 @@ variable "registry_auth_password" {
   default     = ""
 }
 
-### version
-variable "image_tag" {
-  description = "The docker image tag (default: v1.10.17)"
-  type        = string
-  default     = "v1.10.17"
+### Volume options
+
+variable "volume_enable" {
+  description = "Enable persistend volume for storing blockchain data (default: true)"
+  type        = bool
+  default     = true
 }
+
+variable "volume_name" {
+  description = "Name of the persistent volume (default: go_ethereum_data)"
+  type        = string
+  default     = "go_ethereum_data"
+}
+
+variable "volume_type" {
+  description = "Type of the persistent volume (default: go_ethereum_data)"
+  type        = string
+  default     = "host"
+}
+
+variable "volume_read_only" {
+  description = "Read only volume (default: false)"
+  type        = bool
+  default     = false
+}
+
+### Network options
 
 variable "register_consul_service" {
   description = "If you want to register a consul service for the job (default: true)"
@@ -125,9 +178,9 @@ variable "config_path" {
 }
 
 variable "datadir_path" {
-  description = "Path to Data directory for the databases and keystore (default: '')"
+  description = "Path to Data directory for the databases and keystore (default: '~/.ethereum')"
   type        = string
-  default     = ""
+  default     = "~/.ethereum"
 }
 
 variable "datadir_ancient" {
