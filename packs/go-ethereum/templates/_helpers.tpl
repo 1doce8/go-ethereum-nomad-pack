@@ -16,6 +16,18 @@
 [[- end -]]
 [[- end -]]
 
+// Provide auth if specified
+[[ define "auth" -]]
+  [[- if not (eq .go_ethereum.registry_auth_username "") -]]
+  [[- if not (eq .go_ethereum.registry_auth_password "") -]]
+      auth {
+        username = [[ .go_ethereum.registry_auth_username | quote]]
+        password = [[ .go_ethereum.registry_auth_password | quote]]
+      }
+  [[- end -]]
+  [[- end -]]
+[[- end ]]
+
 // Generic constraint
 
 [[ define "constraints" -]]

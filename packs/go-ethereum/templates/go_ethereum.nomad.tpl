@@ -3,6 +3,8 @@ job [[ template "job_name" . ]] {
   datacenters = [ [[ range $idx, $dc := .go_ethereum.datacenters ]][[if $idx]],[[end]][[ $dc | quote ]][[ end ]] ]
   type = "service"
 
+  [[ template "constraints" . ]]
+
   group [[ template "job_name" . ]] {
 
     count = [[ .go_ethereum.count ]]
@@ -106,6 +108,8 @@ job [[ template "job_name" . ]] {
 
       config {
         image = "[[ .go_ethereum.image_name ]]:[[ .go_ethereum.image_tag ]]"
+
+        [[ template "auth" . ]]
       }
 
       args = [

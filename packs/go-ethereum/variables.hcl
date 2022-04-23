@@ -29,6 +29,18 @@ variable "image_name" {
   default     = "ethereum/client-go"
 }
 
+variable "registry_auth_username" {
+  description = "The docker image name without tag (default: '')"
+  type        = string
+  default     = ""
+}
+
+variable "registry_auth_password" {
+  description = "The docker image name without tag (default: '')"
+  type        = string
+  default     = ""
+}
+
 ### version
 variable "image_tag" {
   description = "The docker image tag (default: v1.10.17)"
