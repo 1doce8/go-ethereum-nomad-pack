@@ -51,9 +51,9 @@ variable "expose_ports" {
 ### RPC over HTTP
 
 variable "http_enable" {
-  description = "Enable the HTTP-RPC server (default: true)"
+  description = "Enable the HTTP-RPC server (default: false)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "http_addr" {
@@ -92,14 +92,17 @@ variable "http_rpcprefix" {
    default     = "localhost"
  }
 
+ variable "http_consul_service_enable" {
+   description = "Enable consul service name for the geth HTTP-RPC server (default: false)"
+   type        = bool
+   default     = false
+ }
 
 variable "http_consul_service_name" {
   description = "The consul service name for the geth HTTP-RPC server (default: geth-http)"
   type        = string
   default     = "geth-http"
 }
-
-
 
 ## ETHEREUM OPTIONS
 
@@ -110,9 +113,9 @@ variable "config_path" {
 }
 
 variable "datadir_path" {
-  description = "Path to Data directory for the databases and keystore (default: '~/.ethereum')"
+  description = "Path to Data directory for the databases and keystore (default: '')"
   type        = string
-  default     = "~/.ethereum"
+  default     = ""
 }
 
 variable "datadir_ancient" {
@@ -147,9 +150,9 @@ variable "pcscdpath" {
 
 ### Network options, if network id has specified alias will be ignored
 variable "network_alias" {
-  description = "Network alias of pre-configured network e.g. --mainnet --goreli (default: 'mainnet')"
+  description = "Network alias of pre-configured network e.g. mainnet goreli (default: '')"
   type        = string
-  default     = "mainnet"
+  default     = ""
 }
 
 variable "network_id" {
@@ -159,9 +162,9 @@ variable "network_id" {
 }
 
 variable "sync_syncmode" {
-  description = "Blockchain sync mode ('snap', 'full' or 'light') (default: snap)"
+  description = "Blockchain sync mode ('snap', 'full' or 'light') (default: '')"
   type        = string
-  default     = "snap"
+  default     = ""
 }
 
 variable "sync_exitwhensynced" {
@@ -171,15 +174,15 @@ variable "sync_exitwhensynced" {
 }
 
 variable "sync_gcmode" {
-  description = "Blockchain garbage collection mode ('full', 'archive') (default: 'full')"
+  description = "Blockchain garbage collection mode ('full', 'archive') (default: '')"
   type        = string
-  default     = "full"
+  default     = ""
 }
 
 variable "txlookuplimit" {
-  description = "Number of recent blocks to maintain transactions index for (default = about one year, 0 = entire chain) (default: 2350000)"
-  type        = number
-  default     = 2350000
+  description = "Number of recent blocks to maintain transactions index for (default = about one year, 0 = entire chain) (default: '')"
+  type        = string
+  default     = ""
 }
 
 variable "ethstats" {
@@ -313,9 +316,9 @@ variable "account_allow_insecure_unlock" {
 ### IPC socket
 
 variable "ipc_disable" {
-  description = "Disable the IPC-RPC server (default: true)"
+  description = "Disable the IPC-RPC server (default: false)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "ipc_path" {
@@ -327,15 +330,15 @@ variable "ipc_path" {
 ### RPC over websockets
 
 variable "ws_enable" {
-  description = "Enable the WS-RPC server (default: true)"
+  description = "Enable the WS-RPC server (default: false)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "ws_addr" {
-  description = "The WS-RPC server listening interface (default: localhost)"
+  description = "The WS-RPC server listening interface (default: 0.0.0.0)"
   type        = string
-  default     = "127.0.0.1"
+  default     = "0.0.0.0"
 }
 
 variable "ws_port" {
@@ -362,6 +365,12 @@ variable "ws_origins" {
   default     = "*"
 }
 
+variable "ws_consul_service_enable" {
+  description = "Enable consul service name for the geth application websocket port (default: false)"
+  type        = bool
+  default     = false
+}
+
 variable "ws_consul_service_name" {
   description = "The consul service name for the geth application websocket port (default: geth-ws)"
   type        = string
@@ -370,6 +379,12 @@ variable "ws_consul_service_name" {
 
 ### Auth RPC
 
+variable "authrpc_enable" {
+  description = "Enable the authrpc server (default: false)"
+  type        = bool
+  default     = false
+}
+
 variable "authrpc_jwtsecret" {
   description = "Path to a JWT secret to use for authenticated RPC endpoints (default: '')"
   type        = string
@@ -377,9 +392,9 @@ variable "authrpc_jwtsecret" {
 }
 
 variable "authrpc_addr" {
-  description = "Listening address for authenticated APIs (default: 'localhost')"
+  description = "Listening address for authenticated APIs (default: '127.0.0.1')"
   type        = string
-  default     = "localhost"
+  default     = "127.0.0.1"
 }
 
 variable "authrpc_port" {
@@ -392,6 +407,12 @@ variable "authrpc_vhosts" {
   description = "Comma separated list of virtual hostnames from which to accept requests (server enforced). Accepts '*' wildcard. (default: '*')"
   type        = string
   default     = "*"
+}
+
+variable "authrpc_consul_service_enable" {
+  description = "The consul service name for the geth application authrpc port (default: false)"
+  type        = bool
+  default     = false
 }
 
 variable "authrpc_consul_service_name" {
@@ -423,27 +444,27 @@ variable "graphql_vhosts" {
 ### RPC SETTING
 
 variable "rpc_gascap" {
-  description = "Sets a cap on gas that can be used in eth_call/estimateGas (0=infinite) (default: 50000000)"
-  type        = number
-  default     = 50000000
+  description = "Sets a cap on gas that can be used in eth_call/estimateGas (0=infinite) (default: '')"
+  type        = string
+  default     = ""
 }
 
 variable "rpc_evmtimeout" {
-  description = "Sets a timeout used for eth_call (0=infinite) (default: 5s)"
-  type        = number
-  default     = 5
+  description = "Sets a timeout used for eth_call (0=infinite) (default: '')"
+  type        = string
+  default     = ""
 }
 
 variable "rpc_txfeecap" {
-  description = "Sets a cap on transaction fee (in ether) that can be sent via the RPC APIs (0 = no cap) (default: 1)"
-  type        = number
-  default     = 1
+  description = "Sets a cap on transaction fee (in ether) that can be sent via the RPC APIs (0 = no cap) (default: '')"
+  type        = string
+  default     = ""
 }
 
 variable "rpc_allow_unprotected_txs" {
-  description = "Allow for unprotected (non EIP155 signed) transactions to be submitted via RPC (default: true)"
+  description = "Allow for unprotected (non EIP155 signed) transactions to be submitted via RPC (default: false)"
   type        = bool
-  default     = true
+  default     = false
 }
 
 ### JavaScript SETTINGS
@@ -473,16 +494,22 @@ variable "metrics_enable" {
   default     = true
 }
 
-variable "metrics_consul_service_name" {
-  description = "The consul service name for the geth application (default: geth-metrics)"
-  type        = string
-  default     = "geth-metrics"
-}
-
 variable "metrics_port" {
   description = "The Nomad client port that routes to geth metrics port (default: 6060)"
   type        = number
   default     = 6060
+}
+
+variable "metrics_consul_service_enable" {
+  description = "Enable consul service name for the geth application (default: false)"
+  type        = bool
+  default     = false
+}
+
+variable "metrics_consul_service_name" {
+  description = "The consul service name for the geth application (default: geth-metrics)"
+  type        = string
+  default     = "geth-metrics"
 }
 
 variable "consul_service_tags" {
@@ -493,9 +520,5 @@ variable "consul_service_tags" {
   // another path, change "urlprefix-/" to "urlprefix-/<PATH>" and
   // "traefik.http.routers.http.rule=Path(`/`)" to
   // "traefik.http.routers.http.rule=Path(`/<PATH>`)"
-  default = [
-    "urlprefix-/",
-    "traefik.enable=true",
-    "traefik.http.routers.http.rule=Path(`/`)",
-  ]
+  default = [""]
 }

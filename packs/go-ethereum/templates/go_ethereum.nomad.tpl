@@ -29,15 +29,14 @@ job [[ template "job_name" . ]] {
         }
         [[ end ]]
 
-    [[ end ]]
-    [[ if .go_ethereum.register_consul_service ]][[ if not .go_ethereum.expose_ports ]]
+    [[ else if .go_ethereum.register_consul_service ]]
         mode = "bridge"
-    [[ end ]][[ end ]]
+    [[ end ]]
     }
 
     [[ if .go_ethereum.register_consul_service ]]
 
-    [[ if .go_ethereum.http_enable ]]
+    [[ if .go_ethereum.http_consul_service_enable ]]
     service {
       name = "[[ .go_ethereum.http_consul_service_name ]]"
       [[- if ne (len .go_ethereum.consul_service_tags) 0 ]]
@@ -55,7 +54,7 @@ job [[ template "job_name" . ]] {
     }
     [[ end ]]
 
-    [[ if .go_ethereum.ws_enable ]]
+    [[ if .go_ethereum.ws_consul_service_enable ]]
     service {
       name = "[[ .go_ethereum.ws_consul_service_name ]]"
       [[- if ne (len .go_ethereum.consul_service_tags) 0 ]]
@@ -65,7 +64,7 @@ job [[ template "job_name" . ]] {
     }
     [[ end ]]
 
-    [[ if .go_ethereum.metrics_enable ]]
+    [[ if .go_ethereum.metrics_consul_service_enable ]]
     service {
       name = "[[ .go_ethereum.metrics_consul_service_name ]]"
       [[- if ne (len .go_ethereum.consul_service_tags) 0 ]]
@@ -83,6 +82,7 @@ job [[ template "job_name" . ]] {
     }
     [[ end ]]
 
+    [[ if .go_ethereum.authrpc_consul_service_enable ]]
     service {
       name = "[[ .go_ethereum.authrpc_consul_service_name ]]"
       [[- if ne (len .go_ethereum.consul_service_tags) 0 ]]
@@ -90,6 +90,7 @@ job [[ template "job_name" . ]] {
       [[- end ]]
       port = "[[ .go_ethereum.authrpc_port ]]"
     }
+    [[ end ]]
 
     [[ end ]]
 
@@ -134,25 +135,24 @@ job [[ template "job_name" . ]] {
           [[ if ne (len .go_ethereum.pcscdpath) 0 ]]
           "--pcscdpath = [[ .go_ethereum.pcscdpath ]]",
           [[ end ]]
-
           [[ if ne (len .go_ethereum.network_id) 0 ]]
           "--network_id = [[ .go_ethereum.network_id ]]",
           [[ else if .go_ethereum.dev_enable  ]]
-          [[ else ]]
+          [[ else if ne (len .go_ethereum.network_alias) 0  ]]
           "--[[ .go_ethereum.network_alias ]]"
           [[ end ]]
-
+          [[ if ne (len .go_ethereum.sync_syncmode) 0 ]]
           "--syncmode = [[ .go_ethereum.sync_syncmode ]]",
-
+          [[ end ]]
           [[ if .go_ethereum.sync_exitwhensynced ]]
           "--exitwhensynced"
           [[ end ]]
           [[ if ne (len .go_ethereum.sync_gcmode) 0 ]]
           "--gcmode = [[ .go_ethereum.sync_gcmode ]]",
           [[ end ]]
-
+          [[ if ne (len .go_ethereum.txlookuplimit) 0 ]]
           "--txlookuplimit = [[ .go_ethereum.txlookuplimit ]]",
-
+          [[ end ]]
           [[ if ne (len .go_ethereum.ethstats) 0 ]]
           "--ethstats = [[ .go_ethereum.ethstats ]]",
           [[ end ]]
@@ -245,12 +245,14 @@ job [[ template "job_name" . ]] {
           [[ end ]]
 
           [[/* Auth RPC options */]]
+          [[ if .go_ethereum.ws_enable ]]
           [[ if ne (len .go_ethereum.authrpc_jwtsecret) 0 ]]
           "--authrpc.jwtsecret=[[ .go_ethereum.authrpc_jwtsecret ]]",
           [[ end ]]
           "--authrpc.addr=[[ .go_ethereum.authrpc_addr ]]",
           "--authrpc.port=[[ .go_ethereum.authrpc_port ]]",
           "--authrpc.vhosts=[[ .go_ethereum.authrpc_vhosts ]]",
+          [[ end ]]
 
           [[/* GraphQL options */]]
           [[ if .go_ethereum.graphql_enable ]][[ if .go_ethereum.http_enable ]]
@@ -260,9 +262,15 @@ job [[ template "job_name" . ]] {
           [[ end ]][[ end ]]
 
           [[/* RPC settings */]]
+          [[- if ne (len .go_ethereum.rpc_gascap) 0 ]]
           "--rpc.gascap=[[ .go_ethereum.rpc_gascap ]]",
+          [[- end ]]
+          [[- if ne (len .go_ethereum.rpc_evmtimeout) 0 ]]
           "--rpc.evmtimeout=[[ .go_ethereum.rpc_evmtimeout ]]",
+          [[- end ]]
+          [[- if ne (len .go_ethereum.rpc_txfeecap) 0 ]]
           "--rpc.txfeecap=[[ .go_ethereum.rpc_txfeecap ]]",
+          [[- end ]]
           [[ if .go_ethereum.rpc_allow_unprotected_txs ]]
           "--rpc.allow-unprotected-txs",
           [[ end ]]
@@ -279,7 +287,6 @@ job [[ template "job_name" . ]] {
           [[- end ]]
 
       ]
-
     }
   }
 }
