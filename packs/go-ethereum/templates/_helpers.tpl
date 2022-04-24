@@ -73,7 +73,7 @@
           destination = "[[ .go_ethereum.datadir_path ]]"
           read_only   = [[ .go_ethereum.volume_read_only ]]
         }
-    [[ end ]]
+[[ end ]]
 [[- end ]]
 
 // Args template

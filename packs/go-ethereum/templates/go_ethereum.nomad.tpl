@@ -112,9 +112,10 @@ job [[ template "job_name" . ]] {
     [[- if not (eq .go_ethereum.template_path "") ]]
     template {
         data = <<EOH
-        [[ fileContents .go_ethereum.config_file_path ]]
+        [[ fileContents .go_ethereum.template_path ]]
         EOH
-        destination = "local/config.yml"
+        destination = "local/config.toml"
+        change_mode = "noop"
     }
     [[- end ]]
 
