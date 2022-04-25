@@ -14,7 +14,7 @@ job [[ template "job_name" . ]] {
     count = [[ .go_ethereum.count ]]
 
     network {
-
+ 
     [[ if .go_ethereum.expose_ports ]]
 
         mode = "host"

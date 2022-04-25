@@ -168,6 +168,35 @@
         "--dev.gaslimit = [[ .go_ethereum.dev_gaslimit ]] ",
         [[ end ]]
 
+        [[/* ETHASH OPTIONS */]]
+        [[ if not (eq .go_ethereum.ethash_cachedir "") ]]
+        --ethash.cachedir = [[ .go_ethereum.ethash_cachedir ]],
+        [[ end ]]
+        [[ if not (eq .go_ethereum.ethash_cachesinmem "") ]]
+        --ethash.cachesinmem = [[ .go_ethereum.ethash_cachesinmem ]],
+        [[ end ]]
+        [[ if not (eq .go_ethereum.ethash_cachesondisk "") ]]
+        --ethash.cachesondisk = [[ .go_ethereum.ethash_cachesondisk ]],
+        [[ end ]]
+        [[ if .go_ethereum.ethash_cacheslockmmap ]]
+        --ethash.cacheslockmmap,
+        [[ end ]]
+        [[ if .go_ethereum.ethash_cacheslockmmap ]]
+        --ethash.cacheslockmmap,
+        [[ end ]]
+        [[ if not (eq .go_ethereum.ethash_dagdir "") ]]
+        --ethash.dagdir = [[ .go_ethereum.ethash_dagdir ]],
+        [[ end ]]
+        [[ if not (eq .go_ethereum.ethash_dagsinmem "") ]]
+        --ethash.dagsinmem = [[ .go_ethereum.ethash_dagsinmem ]],
+        [[ end ]]
+        [[ if not (eq .go_ethereum.ethash_dagsondisk "") ]]
+        --ethash.dagsondisk = [[ .go_ethereum.ethash_dagsondisk ]],
+        [[ end ]]
+        [[ if .go_ethereum.ethash_dagslockmmap ]]
+        --ethash.dagslockmmap,
+        [[ end ]]
+
         [[/* ACCOUNT OPTIONS */]]
         [[ if not (eq .go_ethereum.account_unlock "") ]]
         "--unlock = [[ .go_ethereum.account_unlock ]]"
@@ -181,7 +210,6 @@
         [[ if .go_ethereum.account_allow_insecure_unlock ]]
         "--allow-insecure-unlock"
         [[ end ]]
-
 
         [[/* API AND CONSOLE OPTIONS */]]
         [[/* IPC options */]]

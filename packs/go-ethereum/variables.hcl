@@ -350,6 +350,56 @@ variable "dev_gaslimit" {
   default     = 11500000
 }
 
+## ETHASH OPTIONS
+
+variable "ethash_cachedir" {
+  description = "Directory to store the ethash verification caches (default = inside the datadir)"
+  type        = string
+  default     = ""
+}
+
+variable "ethash_cachesinmem" {
+  description = "Number of recent ethash caches to keep in memory (16MB each) (default: 2)"
+  type        = string
+  default     = ""
+}
+
+variable "ethash_cachesondisk" {
+  description = "Number of recent ethash caches to keep on disk (16MB each) (default: 3)"
+  type        = string
+  default     = ""
+}
+
+variable "ethash_cacheslockmmap" {
+  description = "Lock memory maps of recent ethash caches"
+  type        = bool
+  default     = false
+}
+
+variable "ethash_dagdir" {
+  description = "Directory to store the ethash mining DAGs (default: '~/.ethash')"
+  type        = string
+  default     = ""
+}
+
+variable "ethash_dagsinmem" {
+  description = "Number of recent ethash mining DAGs to keep in memory (1+GB each) (default: 1)"
+  type        = string
+  default     = ""
+}
+
+variable "ethash_dagsondisk" {
+  description = "Number of recent ethash mining DAGs to keep on disk (1+GB each) (default: 2)"
+  type        = string
+  default     = ""
+}
+
+variable "ethash_dagslockmmap" {
+  description = "Lock memory maps for recent ethash mining DAGs"
+  type        = bool
+  default     = false
+}
+
 ## ACCOUNT OPTIONS
 
 variable "account_unlock" {
